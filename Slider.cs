@@ -70,8 +70,7 @@ namespace WPFSlider
             Grid.SetColumn(TrackAfterThumb, 1);
 
             Content = MainGrid;
-
-            InitializeMouseEvents();
+            Value = 0;
         }
 
         void InitializeGrids()
@@ -93,26 +92,23 @@ namespace WPFSlider
             TrackGrid.Margin = new Thickness(Thumb.Width / 2 - 2);
         }
 
-        void InitializeMouseEvents()
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs args)
         {
-            MouseLeftButtonDown += (object sender, MouseButtonEventArgs args) =>
+            Value = (args.GetPosition(this).X - Thumb.Width / 2) / (ActualWidth - Thumb.Width);
+            args.MouseDevice.Capture(this);
+        }
+
+        protected override void OnMouseMove (MouseEventArgs args)
+        {
+            if (IsMouseCaptured)
             {
                 Value = (args.GetPosition(this).X - Thumb.Width / 2) / (ActualWidth - Thumb.Width);
-                args.MouseDevice.Capture(this);
-            };
+            }
+        }
 
-            MouseMove += (object sender, MouseEventArgs args) =>
-            {
-                if (IsMouseCaptured)
-                {
-                    Value = (args.GetPosition(this).X - Thumb.Width / 2) / (ActualWidth - Thumb.Width);
-                }
-            };
-
-            MouseLeftButtonUp += (object sender, MouseButtonEventArgs args) =>
-            {
-                args.MouseDevice.Capture(null);
-            };
+        protected override void OnMouseLeftButtonUp (MouseButtonEventArgs args)
+        {
+            args.MouseDevice.Capture(null);
         }
     }
 }

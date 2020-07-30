@@ -1,13 +1,11 @@
-﻿using System;
-
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 using System.Windows.Input;
 
 namespace WPFSlider
 {
-    public class MainWindow : Window
+    class MainWindow : Window
     {
         Grid MainGrid = new Grid();
 
@@ -54,7 +52,7 @@ namespace WPFSlider
 
         void UpdateLabelContent()
         {
-            PercentageLabel.Content = $"{Math.Round(Slider.Value * 100)}%";
+            PercentageLabel.Content = $"{Slider.Value:p1}";
         }
     }
 }
